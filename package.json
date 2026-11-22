@@ -1,0 +1,13 @@
+{
+  "name": "xmas-letter-server",
+  "version": "1.0.0",
+  "description": "圣诞 H5 信件后台：写信 / 凭密码取信",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {}
+}
