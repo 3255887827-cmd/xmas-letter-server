@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#070d22">
+<title>祈瑜星绽 · 圣诞专属祝福</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700&display=swap">
+<style>
+/* ============ 基础 ============ */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:"Noto Serif SC",serif;color:#f3ead6;
+  background:#070d22;display:flex;justify-content:center;align-items:center;height:100dvh;
+}
+#app{position:relative;width:100%;max-width:480px;height:100dvh;overflow:hidden;
+  background:radial-gradient(120% 70% at 50% 16%,#26385f 0%,#16233f 42%,#0b1430 72%,#070d22 100%);}
+#fx{position:absolute;inset:0;z-index:1;pointer-events:none}
+.glow-orb{position:absolute;width:76%;height:42%;left:12%;top:6%;z-index:0;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(255,214,150,.15),transparent 70%);filter:blur(10px)}
+.bg-tree{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.bg-tree .tree-wrap{width:min(72vw,300px);opacity:1}
+
+/* ============ 场景 ============ */
+.scene{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:24px;opacity:0;pointer-events:none;transition:opacity .8s ease}
+.scene.active{opacity:1;pointer-events:auto}
+
+/* ============ 首页 ============ */
+.brand{text-align:center;margin-bottom:34px}
+.brand h1{
+  font-family:"Ma Shan Zheng",cursive;font-style:italic;font-weight:700;
+  font-size:36px;letter-spacing:.2em;text-indent:.2em;
+  background:linear-gradient(115deg,#f6ecd7 8%,#e6c079 46%,#f6ecd7 92%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 12px rgba(230,192,121,.28));
+}
+.brand p{margin-top:12px;font-size:12px;font-style:italic;letter-spacing:.35em;color:#d9b878}
+.entry-card{width:100%;max-width:340px;display:flex;align-items:center;gap:18px;padding:22px 20px;margin-bottom:18px;
+  background:rgba(255,255,255,.05);border:1px solid rgba(232,184,106,.3);border-radius:20px;cursor:pointer;
+  color:inherit;text-align:left;font-family:inherit;backdrop-filter:blur(6px);transition:transform .25s,background .3s,border-color .3s}
+.entry-card:active{transform:scale(.97);background:rgba(232,184,106,.12)}
+.entry-card .icon{flex:none;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 35% 30%,rgba(240,217,168,.25),rgba(232,184,106,.08));border:1px solid rgba(232,184,106,.35);font-size:22px}
+.entry-card h3{font-size:17px;letter-spacing:.15em;margin-bottom:6px}
+.entry-card span{font-size:12px;color:rgba(243,234,214,.62);letter-spacing:.08em;line-height:1.6}
+
+/* ============ 菜单 / 表单 ============ */
+.scene h2{font-size:19px;letter-spacing:.3em;color:#f0d9a8;margin-bottom:28px;text-indent:.3em}
+.menu-btn,.form-btn{width:100%;max-width:320px;padding:16px 20px;margin-bottom:16px;border-radius:16px;cursor:pointer;font-family:inherit;
+  font-size:15px;letter-spacing:.2em;border:1px solid rgba(232,184,106,.45);color:#f0d9a8;background:rgba(232,184,106,.08);transition:background .3s,transform .2s}
+.menu-btn:active,.form-btn:active{background:rgba(232,184,106,.22);transform:scale(.97)}
+.back-btn{margin-top:6px;background:none;border:none;color:rgba(243,234,214,.5);font-size:12px;letter-spacing:.25em;cursor:pointer;font-family:inherit;padding:10px}
+.field{width:100%;max-width:320px;margin-bottom:16px}
+.field label{display:block;font-size:12px;letter-spacing:.25em;color:rgba(232,184,106,.85);margin-bottom:10px}
+.field textarea,.field input{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(232,184,106,.3);border-radius:14px;
+  color:#f3ead6;font-family:inherit;font-size:15px;padding:14px;outline:none;letter-spacing:.05em}
+.field textarea{min-height:120px;resize:none;line-height:1.8}
+.field input::placeholder,.field textarea::placeholder{color:rgba(243,234,214,.35)}
+.field textarea:focus,.field input:focus{border-color:rgba(232,184,106,.7)}
+.hint{font-size:11px;color:rgba(243,234,214,.45);letter-spacing:.1em;margin-top:4px;line-height:1.7}
+
+/* 封存成功 */
+.success-box{text-align:center;max-width:320px}
+.success-box .big{font-size:40px;margin-bottom:18px}
+.success-box h3{font-size:17px;letter-spacing:.2em;color:#f0d9a8;margin-bottom:14px}
+.success-box p{font-size:13px;line-height:1.9;color:rgba(243,234,214,.65)}
+
+/* ============ 圣诞树场景 ============ */
+.tree-wrap{position:relative;width:min(80vw,330px);animation:treeIn 1.4s cubic-bezier(.22,.8,.32,1) both}
+@keyframes treeIn{from{transform:translateY(40px) scale(.94)}to{transform:translateY(0) scale(1)}}
+.tree-wrap svg{width:100%;height:auto;display:block;filter:drop-shadow(0 22px 32px rgba(0,0,0,.5))}
+.scene-title{position:absolute;bottom:8%;left:0;right:0;text-align:center;letter-spacing:.35em;font-size:13px;color:rgba(243,234,214,.75)}
+.scene-title small{display:block;margin-top:8px;font-style:italic;letter-spacing:.22em;font-size:10px;color:rgba(232,184,106,.6)}
+
+/* ============ 信件 ============ */
+.letter-stage{position:relative;width:min(82vw,340px);display:flex;flex-direction:column;align-items:center}
+.envelope{position:relative;width:100%;aspect-ratio:1.5/1;perspective:900px}
+.env-body{position:absolute;inset:0;background:linear-gradient(160deg,#f6ecd7,#e9d8b8);border-radius:10px;box-shadow:0 22px 45px rgba(0,0,0,.5)}
+.env-flap{position:absolute;left:0;top:0;width:100%;height:52%;background:linear-gradient(180deg,#efe0c2,#ddc69c);
+  clip-path:polygon(0 0,50% 100%,100% 0);border-radius:10px 10px 0 0;transform-origin:top center;transition:transform .8s cubic-bezier(.3,.7,.3,1);z-index:3}
+.envelope.open .env-flap{transform:rotateX(180deg);z-index:1}
+.env-seal{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:4;width:44px;height:44px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#f0c87e,#b97f3e);display:flex;align-items:center;justify-content:center;
+  color:#fff8ea;font-size:18px;box-shadow:0 4px 12px rgba(0,0,0,.35);transition:opacity .4s,transform .6s}
+.envelope.open .env-seal{opacity:0;transform:translate(-50%,-50%) scale(.4)}
+.paper{position:absolute;left:6%;width:88%;bottom:8%;background:#fdf8ee;border-radius:12px;padding:28px 22px 22px;
+  box-shadow:0 18px 40px rgba(0,0,0,.45);color:#3a2f22;z-index:2;min-height:210px;
+  transform:translateY(46%);opacity:0;transition:transform .9s cubic-bezier(.22,.8,.32,1),opacity .6s}
+.envelope.open .paper{transform:translateY(6%);opacity:1;z-index:3}
+.paper .msg-line{font-family:"Ma Shan Zheng",cursive;font-size:21px;line-height:2;white-space:pre-wrap;letter-spacing:.04em}
+.caret{display:inline-block;width:2px;height:1.05em;background:#b97f3e;vertical-align:-0.15em;margin-left:2px;animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.paper .paper-foot{margin-top:20px;text-align:right;font-size:11px;letter-spacing:.25em;color:rgba(138,90,43,.55)}
+.next-btn{margin-top:30px;padding:13px 30px;border:1px solid rgba(232,184,106,.65);border-radius:999px;background:rgba(232,184,106,.1);
+  color:#f0d9a8;font-size:14px;letter-spacing:.25em;cursor:pointer;opacity:0;transform:translateY(12px);
+  transition:opacity .7s,transform .7s,background .3s;font-family:inherit}
+.next-btn.show{opacity:1;transform:translateY(0)}
+.next-btn:active{background:rgba(232,184,106,.25)}
+
+/* toast */
+#toast{position:absolute;top:12%;left:50%;transform:translateX(-50%) translateY(-10px);z-index:30;padding:11px 20px;border-radius:12px;
+  background:rgba(20,30,55,.92);border:1px solid rgba(232,184,106,.35);color:#f0d9a8;font-size:13px;letter-spacing:.1em;
+  opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;white-space:nowrap}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div id="app">
+  <canvas id="fx"></canvas>
+  <div class="glow-orb"></div>
+
+  <!-- 常驻背景圣诞树（首页 + 动画幕共用） -->
+  <div class="bg-tree" id="bgTree">
+    <div class="tree-wrap">
+      <svg viewBox="0 0 300 440" aria-label="圣诞树">
+        <defs>
+          <linearGradient id="tierGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#41665c"/>
+            <stop offset="1" stop-color="#18322f"/>
+          </linearGradient>
+          <linearGradient id="snowG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#f2f7f5"/>
+            <stop offset="1" stop-color="#c9d8d6"/>
+          </linearGradient>
+          <radialGradient id="behind" cx="50%" cy="50%" r="50%">
+            <stop offset="0" stop-color="rgba(255,224,170,.18)"/>
+            <stop offset="1" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="150" cy="210" rx="150" ry="190" fill="url(#behind)"/>
+        <g id="tierG"></g>
+        <g id="ornamentG"></g>
+        <g id="lightG"></g>
+        <rect x="138" y="372" width="24" height="24" rx="4" fill="#5a4632"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- 首页：两个入口 -->
+  <section class="scene active" id="sceneHome">
+    <div class="brand">
+      <h1>祈瑜星绽</h1>
+      <p>MERRY CHRISTMAS · 专属定制</p>
+    </div>
+    <button class="entry-card" id="entryCustom">
+      <div class="icon">✉</div>
+      <div><h3>定制祝福</h3><span>亲手写下心意，或凭密码查收别人为你准备的祝福</span></div>
+    </button>
+    <button class="entry-card" id="entryRandom">
+      <div class="icon">✦</div>
+      <div><h3>随机惊喜</h3><span>抽一条今日份的圣诞好运，看看星星替你写下什么</span></div>
+    </button>
+  </section>
+
+  <!-- 定制菜单：两个按钮 -->
+  <section class="scene" id="sceneMenu">
+    <h2>定制祝福</h2>
+    <button class="menu-btn" id="btnWrite">我要写一封祝福</button>
+    <button class="menu-btn" id="btnRead">输入密码查收祝福</button>
+    <button class="back-btn" data-back="sceneHome">← 返回首页</button>
+  </section>
+
+  <!-- 写信 -->
+  <section class="scene" id="sceneWrite">
+    <h2>写下心意</h2>
+    <div class="field">
+      <label>祝福内容</label>
+      <textarea id="writeMsg" maxlength="100" placeholder="把想说的话写在这里……"></textarea>
+      <div class="hint">最多 100 字，对方凭密码拆开这封信。</div>
+    </div>
+    <div class="field">
+      <label>取件密码</label>
+      <input id="writePwd" type="password" maxlength="12" placeholder="设置 4–12 位密码">
+    </div>
+    <button class="form-btn" id="btnSave">封存这封信</button>
+    <button class="back-btn" data-back="sceneMenu">← 返回</button>
+  </section>
+
+  <!-- 封存成功 -->
+  <section class="scene" id="sceneSaved">
+    <div class="success-box">
+      <div class="big">🎄</div>
+      <h3>祝福已封存</h3>
+      <p>把本页面链接和取件密码告诉对方，TA 打开链接、输入密码，就能看到你写的祝福。</p>
+    </div>
+    <button class="form-btn" style="margin-top:26px" id="btnDone">完成</button>
+  </section>
+
+  <!-- 密码查收 -->
+  <section class="scene" id="sceneRead">
+    <h2>查收祝福</h2>
+    <div class="field">
+      <label>取件密码</label>
+      <input id="readPwd" type="password" maxlength="12" placeholder="输入对方给你的密码">
+    </div>
+    <button class="form-btn" id="btnOpen">查看祝福</button>
+    <button class="back-btn" data-back="sceneMenu">← 返回</button>
+  </section>
+
+  <!-- 圣诞树（动画幕，树体见常驻背景层） -->
+  <section class="scene" id="sceneTree">
+    <div class="scene-title">祈 瑜 星 绽<small>MERRY CHRISTMAS</small></div>
+  </section>
+
+  <!-- 信件 -->
+  <section class="scene" id="sceneLetter">
+    <div class="letter-stage">
+      <div class="envelope" id="envelope">
+        <div class="env-body"></div>
+        <div class="env-flap"></div>
+        <div class="env-seal">✦</div>
+        <div class="paper" id="paper">
+          <div class="msg-line" id="letterMsg"></div>
+          <div class="paper-foot">— 圣诞限定 · 为你而写 —</div>
+        </div>
+      </div>
+      <button class="next-btn" id="btnHome">返回首页</button>
+    </div>
+  </section>
+
+  <div id="toast"></div>
+</div>
+
+<script>
+/* ============================================================
+   【后台接口配置】
+   后台服务部署后，把地址填到这里，例如：
+   const API_BASE = "https://your-server.onrender.com";
+   留空 "" 时使用本机浏览器存储（仅演示，换设备读不到）。
+   ============================================================ */
+const API_BASE = "https://xmas-letter-server-production.up.railway.app";
+
+/* 爆款圣诞文案池（随机抽取，每次不重复上一条） */
+const POOL = [
+  "祝你快乐，不止圣诞。",
+  "悸动与玫瑰，圣诞与你。",
+  "诞愿是你，晚一点也没关系。",
+  "圣诞快乐，你和平安一样重要。",
+  "圣诞是冬的来信，而你是我的惊喜。",
+  "希望你快乐，不止圣诞这一天。",
+  "世上本无圣诞老人，所有礼物和惊喜都来自爱你的人。",
+  "当圣诞夜的星光温柔洒落，每一束微光都藏着我为你积攒的温柔。",
+  "愿你的冬天，总有暖手的热饮，和暖心的人。",
+  "钟声响，祥瑞添，平安夜，道平安。",
+  "雪落圣诞夜，温柔满人间；热红酒暖手，星光缀梦。",
+  "如果雪花懂幽默，希望它今晚都落在你想要幸运的地方。",
+  "圣诞老人走过的空气里，总会留下一点好运的余温。",
+  "星子落进杯沿，叮当作响，愿这一年的好运都被悄悄点亮。",
+  "在这被灯火铺满的夜里，愿你被爱、被暖意、被答案轻轻找到。",
+  "积攒漫天星光，挂满我的圣诞树。",
+  "把袜子翻过来，里朝外挂起来，整个世界都是你的礼物。",
+  "愿所求皆如愿，所行皆坦途，圣诞快乐。",
+  "所有糟糕的都是经历，所有的美好都会在未来相遇。",
+  "十二月会有奇迹，圣诞会有惊喜。",
+  "圣诞限定美好，和喜欢的一切撞个满怀。",
+  "驯鹿踏雪而来，带来圣诞的所有美好。"
+];
+
+/* ---------- 工具 ---------- */
+const $ = id => document.getElementById(id);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const app = $("app");
+
+/* ---------- 信件存储：后台 API 优先，空地址时回退本机 ---------- */
+const LS_KEY = "xmas_letters_v1";
+function loadLetters(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)) || {}; }catch(e){ return {}; } }
+function persistLetters(o){ localStorage.setItem(LS_KEY, JSON.stringify(o)); }
+
+async function saveLetter(pwd,msg){
+  if(API_BASE){
+    const r=await fetch(API_BASE.replace(/\/$/,"")+"/api/letters",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({password:pwd,message:msg})
+    });
+    if(!r.ok) throw new Error("save failed");
+  }else{
+    const letters=loadLetters(); letters[pwd]=msg; persistLetters(letters);
+  }
+}
+async function getLetter(pwd){
+  if(API_BASE){
+    const r=await fetch(API_BASE.replace(/\/$/,"")+"/api/letters/"+encodeURIComponent(pwd));
+    if(r.status===404) return null;
+    if(!r.ok) throw new Error("load failed");
+    const d=await r.json(); return d.message||null;
+  }
+  const letters=loadLetters(); return letters[pwd]||null;
+}
+
+/* ---------- 场景切换 ---------- */
+function showScene(id){
+  document.querySelectorAll(".scene").forEach(s=>s.classList.remove("active"));
+  $(id).classList.add("active");
+}
+document.querySelectorAll("[data-back]").forEach(b=>{
+  b.addEventListener("click",()=>showScene(b.dataset.back));
+});
+
+/* ---------- toast ---------- */
+let toastTimer;
+function toast(msg){
+  const t=$("toast"); t.textContent=msg; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("show"),1800);
+}
+
+/* ============================================================
+   Canvas 粒子引擎：流星轨迹 + 绽放 + 汇聚成信封
+   ============================================================ */
+const fx=$("fx"), ctx=fx.getContext("2d");
+let W=0,H=0,DPR=1;
+function resize(){
+  DPR=Math.min(window.devicePixelRatio||1,2);
+  W=app.clientWidth; H=app.clientHeight;
+  fx.width=W*DPR; fx.height=H*DPR;
+  fx.style.width=W+"px"; fx.style.height=H+"px";
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+resize(); window.addEventListener("resize",resize);
+
+let phase="idle";            // idle | orbit | burst | converge | hold | fade
+let particles=[], meteors=[], motes=[];
+let comet={active:false,hist:[]};
+let orbitT=0;
+
+/* 信封轮廓采样点（相对屏幕中心） */
+function envelopeTargets(){
+  const ew=Math.min(W*0.72,320), eh=ew*0.66;
+  const cx=W/2, cy=H*0.5;
+  const L=-ew/2,R=ew/2,T=-eh/2,B=eh/2;
+  const pts=[];
+  const line=(x1,y1,x2,y2,n)=>{ for(let i=0;i<=n;i++){ const t=i/n; pts.push({x:cx+x1+(x2-x1)*t, y:cy+y1+(y2-y1)*t}); } };
+  line(L,T,R,T,8);            // 上沿
+  line(R,T,R,B,10);           // 右沿
+  line(R,B,L,B,10);           // 下沿
+  line(L,B,L,T,10);           // 左沿
+  line(L,T,0,eh*0.08,6);      //  flap 左
+  line(0,eh*0.08,R,T,6);      //  flap 右
+  return pts;
+}
+
+/* 环境：缓慢上浮的微光 + 偶发流星（带轨迹） */
+function initMotes(){
+  motes=[];
+  for(let i=0;i<24;i++){
+    motes.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.6+.6,
+      vy:-(Math.random()*.25+.08),vx:(Math.random()-.5)*.15,ph:Math.random()*Math.PI*2});
+  }
+}
+initMotes();
+
+function spawnMeteor(){
+  const fromLeft=Math.random()>.5;
+  meteors.push({
+    x: fromLeft?-40:Math.random()*W, y:Math.random()*H*0.5,
+    vx:(fromLeft?1:-1)*(Math.random()*3+3.5), vy:Math.random()*1.6+.8,
+    life:1, decay:Math.random()*.012+.008
+  });
+}
+
+function spawnBurst(){
+  particles=[];
+  const n=120;
+  for(let i=0;i<n;i++){
+    const ang=Math.random()*Math.PI*2, sp=Math.random()*3.4+1.2;
+    particles.push({
+      x:W/2,y:H*0.5, px:W/2, py:H*0.5,
+      vx:Math.cos(ang)*sp, vy:Math.sin(ang)*sp,
+      life:1, decay:Math.random()*.008+.005,
+      size:Math.random()*2+.8, target:null, sway:Math.random()*Math.PI*2,
+      color:Math.random()>.3?"255,224,160":"255,190,110"
+    });
+  }
+}
+
+function converge(){
+  const pts=envelopeTargets();
+  particles.forEach((p,i)=>{ p.target=pts[i%pts.length]; });
+}
+
+function frame(now){
+  ctx.clearRect(0,0,W,H);
+  ctx.globalCompositeOperation="lighter";
+
+  /* 环境微光 */
+  motes.forEach(m=>{
+    m.x+=m.vx; m.y+=m.vy; m.ph+=.02;
+    if(m.y<-4){m.y=H+4;m.x=Math.random()*W;}
+    if(m.x<-4)m.x=W+4; if(m.x>W+4)m.x=-4;
+    const a=.18+.14*Math.sin(m.ph);
+    ctx.beginPath(); ctx.arc(m.x,m.y,m.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,240,210,${a})`; ctx.fill();
+  });
+
+  /* 偶发流星 */
+  if(phase==="idle" && Math.random()<.008) spawnMeteor();
+  meteors=meteors.filter(m=>m.life>0);
+  meteors.forEach(m=>{
+    m.x+=m.vx; m.y+=m.vy; m.life-=m.decay;
+    const tx=m.x-m.vx*6, ty=m.y-m.vy*6;
+    const g=ctx.createLinearGradient(m.x,m.y,tx,ty);
+    g.addColorStop(0,`rgba(255,240,210,${.7*Math.max(m.life,0)})`);
+    g.addColorStop(1,"rgba(255,240,210,0)");
+    ctx.strokeStyle=g; ctx.lineWidth=1.6; ctx.beginPath();
+    ctx.moveTo(m.x,m.y); ctx.lineTo(tx,ty); ctx.stroke();
+  });
+
+  /* 环绕彗星（带拖尾） */
+  if(comet.active){
+    const cx=W/2, cy=H*0.52, rx=Math.min(W*0.36,170), ry=Math.min(H*0.23,140);
+    const ang=orbitT*Math.PI*2-Math.PI/2;
+    const x=cx+Math.cos(ang)*rx, y=cy+Math.sin(ang)*ry;
+    comet.hist.push({x,y});
+    if(comet.hist.length>18) comet.hist.shift();
+    comet.hist.forEach((p,i)=>{
+      const k=i/comet.hist.length;
+      ctx.beginPath(); ctx.arc(p.x,p.y,2.4*k+.6,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,224,150,${.55*k})`; ctx.fill();
+    });
+    ctx.beginPath(); ctx.arc(x,y,4.2,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,246,220,.95)"; ctx.fill();
+    ctx.beginPath(); ctx.arc(x,y,9,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,210,120,.25)"; ctx.fill();
+  }
+
+  /* 粒子：绽放 / 汇聚 */
+  particles.forEach(p=>{
+    p.px=p.x; p.py=p.y;
+    if(phase==="burst"){
+      p.x+=p.vx; p.y+=p.vy;
+      p.vx*=.985; p.vy*=.985;
+      p.life-=p.decay;
+    }else if(phase==="converge"||phase==="hold"){
+      if(p.target){
+        p.x+=(p.target.x-p.x)*.08; p.y+=(p.target.y-p.y)*.08;
+      }
+      p.sway+=.05;
+      p.x+=Math.sin(p.sway)*.15; p.y+=Math.cos(p.sway)*.15;
+    }else if(phase==="fade"){
+      p.life-=.02;
+    }
+    const a=Math.max(p.life,0);
+    ctx.beginPath(); ctx.moveTo(p.px,p.py); ctx.lineTo(p.x,p.y);
+    ctx.strokeStyle=`rgba(${p.color},${a*.8})`; ctx.lineWidth=p.size; ctx.stroke();
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.size*.6,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${p.color},${a})`; ctx.fill();
+  });
+
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ============================================================
+   圣诞树生成：多层锯齿枝叶 + 雪覆 + 灯串 + 挂饰
+   ============================================================ */
+(function buildTree(){
+  let seed=11;
+  const rnd=()=>{seed=(seed*9301+49297)%233280;return seed/233280;};
+  const treeG=$("tierG"), lightG=$("lightG"), ornG=$("ornamentG");
+  const NS="http://www.w3.org/2000/svg";
+  const cx=150, top=26, base=384, half=106, levels=10;
+
+  // 单棵尖顶锥形，两侧锯齿模拟松针枝桠
+  function sidePoint(i,side){
+    const t=i/levels;
+    const y=top+(base-top)*t;
+    const tooth=(i%2? 8:0);
+    return {x:cx+side*(half*t-tooth), y};
+  }
+  let d=`M ${cx} ${top} `;
+  for(let i=1;i<=levels;i++){ const p=sidePoint(i,1); d+=`L ${p.x} ${p.y} `; }
+  d+=`L ${cx-half} ${base} `;
+  for(let i=levels-1;i>=0;i--){ const p=sidePoint(i,-1); d+=`L ${p.x} ${p.y} `; }
+  d+="Z";
+  const path=document.createElementNS(NS,"path");
+  path.setAttribute("d",d); path.setAttribute("fill","url(#tierGrad)");
+  path.setAttribute("stroke","#102623"); path.setAttribute("stroke-width","1.2");
+  treeG.appendChild(path);
+
+  // 树冠顶部薄雪
+  const snow=document.createElementNS(NS,"path");
+  const sd=`M ${cx} ${top} L ${cx+half*.42} ${top+(base-top)*.3} L ${cx} ${top+(base-top)*.42} L ${cx-half*.42} ${top+(base-top)*.3} Z`;
+  snow.setAttribute("d",sd); snow.setAttribute("fill","url(#snowG)"); snow.setAttribute("opacity",".18");
+  treeG.appendChild(snow);
+
+  // 灯串：按树冠宽度比例分布
+  const colors=["#fff3d9","#ffd27a","#ffe9b8","#f7c96a"];
+  for(let i=0;i<34;i++){
+    const y=top+18+rnd()*(base-top-26);
+    const t=(y-top)/(base-top);
+    const hx=half*t;
+    const x=cx-hx+rnd()*hx*2;
+    const c=document.createElementNS(NS,"circle");
+    c.setAttribute("cx",x.toFixed(1)); c.setAttribute("cy",y.toFixed(1));
+    c.setAttribute("r",(rnd()*1.5+1.6).toFixed(1));
+    c.setAttribute("fill",colors[Math.floor(rnd()*colors.length)]);
+    c.style.animation=`twinkle ${(rnd()*2+2).toFixed(1)}s ease-in-out infinite`;
+    c.style.animationDelay=(rnd()*2)+"s";
+    lightG.appendChild(c);
+  }
+  // 挂饰球
+  const ballCols=["#c8543f","#e8b86a","#b8443a"];
+  for(let i=0;i<10;i++){
+    const y=top+30+rnd()*(base-top-44);
+    const t=(y-top)/(base-top);
+    const hx=half*t*.9;
+    const x=cx-hx+rnd()*hx*2;
+    const b=document.createElementNS(NS,"circle");
+    b.setAttribute("cx",x.toFixed(1)); b.setAttribute("cy",y.toFixed(1));
+    b.setAttribute("r",(rnd()*3+4).toFixed(1));
+    b.setAttribute("fill",ballCols[Math.floor(rnd()*ballCols.length)]);
+    b.setAttribute("opacity",".95");
+    ornG.appendChild(b);
+  }
+})();
+
+/* ============================================================
+   业务流程
+   ============================================================ */
+let currentMsg="";
+
+function pickRandom(){
+  let last=parseInt(localStorage.getItem("xmas_last")||"-1",10);
+  let idx;
+  do{ idx=Math.floor(Math.random()*POOL.length); }while(POOL.length>1&&idx===last);
+  localStorage.setItem("xmas_last",String(idx));
+  return POOL[idx];
+}
+
+/* 打字机 */
+function typewriter(el,text,speed=90){
+  return new Promise(res=>{
+    let i=0; el.innerHTML='<span class="caret"></span>';
+    const caret=el.querySelector(".caret");
+    const tick=()=>{
+      if(i<text.length){ el.insertBefore(document.createTextNode(text[i]),caret); i++; setTimeout(tick,speed); }
+      else{ setTimeout(()=>caret.remove(),600); res(); }
+    };
+    tick();
+  });
+}
+
+/* 完整动画流程：树 → 环绕 → 绽放 → 汇聚信封 → 出信 */
+async function showLetterFlow(msg){
+  currentMsg=msg;
+  showScene("sceneTree");
+  await sleep(1100);
+
+  // 第二幕：流星绕树一圈（interval 驱动，不依赖 rAF 帧）
+  phase="orbit"; comet.active=true; comet.hist=[]; orbitT=0;
+  await new Promise(res=>{
+    const start=performance.now(), dur=4600;
+    const iv=setInterval(()=>{
+      orbitT=Math.min((performance.now()-start)/dur,1);
+      if(orbitT>=1){ clearInterval(iv); res(); }
+    },30);
+  });
+  comet.active=false;
+
+  // 第三幕：中心绽放成细光点
+  phase="burst"; spawnBurst();
+  await sleep(1400);
+
+  // 光点汇聚成信封
+  phase="converge"; converge();
+  await sleep(1900);
+  phase="hold";
+  await sleep(900);
+
+  // 信封浮现，信纸抽出，祝福直接呈现
+  phase="fade";
+  showScene("sceneLetter");
+  $("envelope").classList.add("open");
+  await sleep(1100);
+  await typewriter($("letterMsg"),currentMsg,90);
+  await sleep(800);
+  $("btnHome").classList.add("show");
+}
+
+/* ---------- 首页入口 ---------- */
+$("entryCustom").addEventListener("click",()=>showScene("sceneMenu"));
+$("entryRandom").addEventListener("click",()=>showLetterFlow(pickRandom()));
+
+/* ---------- 菜单 ---------- */
+$("btnWrite").addEventListener("click",()=>showScene("sceneWrite"));
+$("btnRead").addEventListener("click",()=>showScene("sceneRead"));
+
+/* ---------- 写信保存 ---------- */
+$("btnSave").addEventListener("click",async()=>{
+  const msg=$("writeMsg").value.trim();
+  const pwd=$("writePwd").value.trim();
+  if(!msg){ toast("先写下你的祝福吧"); return; }
+  if(!/^\S{4,12}$/.test(pwd)){ toast("密码为 4–12 位，不含空格"); return; }
+  try{
+    await saveLetter(pwd,msg);
+    showScene("sceneSaved");
+  }catch(e){
+    toast("网络异常，保存失败，请重试");
+  }
+});
+$("btnDone").addEventListener("click",()=>{ showScene("sceneHome"); });
+
+/* ---------- 密码查收 ---------- */
+$("btnOpen").addEventListener("click",async()=>{
+  const pwd=$("readPwd").value.trim();
+  if(!pwd){ toast("请输入取件密码"); return; }
+  try{
+    const msg=await getLetter(pwd);
+    if(msg){ showLetterFlow(msg); }
+    else{ toast("密码有误，或这份祝福还不存在"); }
+  }catch(e){
+    toast("网络异常，请稍后重试");
+  }
+});
+
+/* ---------- 信件页返回首页 ---------- */
+$("btnHome").addEventListener("click",()=>{ showScene("sceneHome"); });
+
+/* ---------- 链接直达：?msg=xxx 直接展示 ---------- */
+(function(){
+  const q=new URLSearchParams(location.search);
+  const m=q.get("msg");
+  if(m&&m.trim()){ showLetterFlow(m.trim()); }
+})();
+</script>
+</body>
+</html>

@@ -16,6 +16,7 @@ const path = require("path");
 const PORT = process.env.PORT || 3000;
 const DATA_DIR = path.join(__dirname, "data");
 const DB_FILE = path.join(DATA_DIR, "letters.json");
+const INDEX_FILE = path.join(__dirname, "index.html");
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -63,6 +64,18 @@ const server = http.createServer(async (req, res) => {
 
   if (url.pathname === "/api/health") {
     return send(res, 200, { ok: true });
+  }
+
+  // 静态首页：对外提供干净版 H5
+  if (req.method === "GET" && url.pathname === "/") {
+    try {
+      const html = fs.readFileSync(INDEX_FILE, "utf8");
+      res.writeHead(200, { "Content-Type": "text/html; charset=utf-8", ...CORS });
+      res.end(html);
+    } catch (e) {
+      send(res, 500, { error: "index missing" });
+    }
+    return;
   }
 
   // 写信
